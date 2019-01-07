@@ -30,16 +30,24 @@ var config = {
     }
 };
 
-var LocalLogging = true;
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+var LocalLogging = getParameterByName('debug') || false;
 
 function log(action, label, value) {
-	if(LocalLogging) {
-		if(typeof label !== 'undefined') 
-			console.log(`BoxGame Event '${action}': ${label} = ${value}`);
-		else 
-			console.log(`BoxGame Event '${action}'`);
-	}
-	else {
+	if(typeof label !== 'undefined') 
+		console.log(`BoxGame Event '${action}': ${label} = ${value}`);
+	else
+		console.log(`BoxGame Event '${action}'`);
+	if(!LocalLogging) {
 		var info = {event_category: 'BoxGame'};
 		if(typeof label !== 'undefined') {
 			info.event_label = label;
