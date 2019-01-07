@@ -34,7 +34,10 @@ var LocalLogging = true;
 
 function log(action, label, value) {
 	if(LocalLogging) {
-		console.log(`BoxGame Event '${action}': ${label} = ${value}`);
+		if(typeof label !== 'undefined') 
+			console.log(`BoxGame Event '${action}': ${label} = ${value}`);
+		else 
+			console.log(`BoxGame Event '${action}'`);
 	}
 	else {
 		var info = {event_category: 'BoxGame'};
